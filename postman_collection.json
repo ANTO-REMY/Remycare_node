@@ -1,0 +1,301 @@
+{
+  "info": {
+    "name": "Remy Care Connect API",
+    "description": "Backend API for maternal healthcare management system with automatic JWT token management",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const accessToken = pm.environment.get('accessToken');",
+          "const refreshToken = pm.environment.get('refreshToken');",
+          "",
+          "function isTokenExpired(token) {",
+          "    if (!token) return true;",
+          "    try {",
+          "        const payload = JSON.parse(atob(token.split('.')[1]));",
+          "        return payload.exp * 1000 < Date.now() + 120000;",
+          "    } catch (e) {",
+          "        return true;",
+          "    }",
+          "}",
+          "",
+          "if (isTokenExpired(accessToken) && refreshToken) {",
+          "    pm.sendRequest({",
+          "        url: pm.environment.get('baseUrl') + '/auth/refresh',",
+          "        method: 'POST',",
+          "        header: { 'Content-Type': 'application/json' },",
+          "        body: {",
+          "            mode: 'raw',",
+          "            raw: JSON.stringify({ refreshToken: refreshToken })",
+          "        }",
+          "    }, function (err, response) {",
+          "        if (!err && response.code === 200) {",
+          "            const data = response.json();",
+          "            pm.environment.set('accessToken', data.accessToken);",
+          "        }",
+          "    });",
+          "}"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "if (pm.response.code === 200 || pm.response.code === 201) {",
+          "    const jsonData = pm.response.json();",
+          "    if (jsonData.accessToken) {",
+          "        pm.environment.set('accessToken', jsonData.accessToken);",
+          "    }",
+          "    if (jsonData.refreshToken) {",
+          "        pm.environment.set('refreshToken', jsonData.refreshToken);",
+          "    }",
+          "}"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        },
+        "description": "Check if the server is running and healthy"
+      },
+      "response": []
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register Mother",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+254701234567\",\n  \"password\": \"SecurePass123!\",\n  \"name\": \"Grace Wanjiku\",\n  \"role\": \"mother\",\n  \"email\": \"grace@example.com\",\n  \"location\": \"Nairobi\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            },
+            "description": "Register a new mother user"
+          },
+          "response": []
+        },
+        {
+          "name": "Register CHW",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+254711234567\",\n  \"password\": \"SecurePass123!\",\n  \"name\": \"James Kiprotich\",\n  \"role\": \"chw\",\n  \"email\": \"james@example.com\",\n  \"location\": \"Nairobi\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            },
+            "description": "Register a new Community Health Worker"
+          },
+          "response": []
+        },
+        {
+          "name": "Register Nurse",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+254721234567\",\n  \"password\": \"SecurePass123!\",\n  \"name\": \"Mary Akinyi\",\n  \"role\": \"nurse\",\n  \"email\": \"mary@example.com\",\n  \"location\": \"Nairobi Hospital\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            },
+            "description": "Register a new nurse user"
+          },
+          "response": []
+        },
+        {
+          "name": "Login Mother",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+254701234567\",\n  \"password\": \"SecurePass123!\",\n  \"role\": \"mother\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Login as a mother user. Tokens are automatically saved to environment variables."
+          },
+          "response": []
+        },
+        {
+          "name": "Login CHW",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+254711234567\",\n  \"password\": \"SecurePass123!\",\n  \"role\": \"chw\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Login as a CHW user. Tokens are automatically saved to environment variables."
+          },
+          "response": []
+        },
+        {
+          "name": "Login Nurse",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+254721234567\",\n  \"password\": \"SecurePass123!\",\n  \"role\": \"nurse\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Login as a nurse user. Tokens are automatically saved to environment variables."
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/refresh",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "refresh"]
+            },
+            "description": "Manually refresh the access token using the refresh token. This happens automatically before each request."
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "logout"]
+            },
+            "description": "Logout the current user and invalidate the session. Requires authentication."
+          },
+          "response": []
+        }
+      ],
+      "description": "Authentication endpoints for user registration, login, token refresh, and logout"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    }
+  ]
+}
