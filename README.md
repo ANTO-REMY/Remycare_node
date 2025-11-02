@@ -13,21 +13,6 @@ Node.js + TypeScript + Express + Prisma + SQLite backend for maternal healthcare
 - ✅ Request Logging (Morgan)
 - ✅ TypeScript for Type Safety
 
-## Project Structure
-
-```
-src/
-├── controllers/      # Request handlers
-├── middleware/       # Auth, validation, error handling
-├── routes/          # API routes
-├── services/        # Business logic
-├── utils/           # Helper functions (JWT, password)
-├── types/           # TypeScript types
-├── validators/      # Zod schemas
-├── generated/       # Prisma client (auto-generated)
-├── app.ts           # Express app setup
-└── index.ts         # Server entry point
-```
 
 ## Setup
 
@@ -63,18 +48,6 @@ npm run build
 npm start
 ```
 
-## API Endpoints
-
-### Authentication
-
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login user
-- `POST /api/auth/refresh` - Refresh access token
-- `POST /api/auth/logout` - Logout user (requires auth)
-
-### Health Check
-
-- `GET /health` - Server health status
 
 ## Environment Variables
 
@@ -86,30 +59,6 @@ REFRESH_TOKEN_SECRET="your-refresh-token-secret"
 FRONTEND_URL="http://localhost:5173"
 ```
 
-## Database Management
-
-**View database with Prisma Studio:**
-```bash
-npx prisma studio
-```
-
-**Create new migration:**
-```bash
-npx prisma migrate dev --name migration_name
-```
-
-**Reset database:**
-```bash
-npx prisma migrate reset
-```
-
-## Testing with Postman
-
-1. Import the Postman collection (coming soon)
-2. Set environment variables:
-   - `baseUrl`: `http://localhost:3000/api`
-   - `accessToken`: (auto-populated after login)
-   - `refreshToken`: (auto-populated after login)
 
 ## Security Features
 
@@ -142,6 +91,4 @@ npx prisma migrate reset
 - **Logging**: Morgan
 - **Validation**: Zod (planned)
 
-## License
 
-ISC
