@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { hashPassword, comparePassword } from '../utils/password.js';
 import { generateAccessToken, generateRefreshToken } from '../utils/jwt.js';
 import { v4 as uuidv4 } from 'uuid';
+import * as auditService from './auditService.js';
 
 const prisma = new PrismaClient();
 
@@ -92,6 +93,15 @@ export const registerUser = async (data: RegisterData): Promise<AuthTokens> => {
     }
   });
 
+  // Audit log for registration
+  await auditService.createAuditLog({
+    userId: user.id,
+    action: 'USER_REGISTERED',
+    resourceType: 'User',
+    resourceId: user.id,
+    newValues: { phone: user.phone, role: user.role, name: user.name },
+  });
+
   return {
     accessToken,
     refreshToken,
@@ -132,6 +142,14 @@ export const loginUser = async (data: LoginData): Promise<AuthTokens> => {
       refreshToken,
       expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
     }
+  });
+
+  // Audit log for login
+  await auditService.createAuditLog({
+    userId: user.id,
+    action: 'USER_LOGIN',
+    resourceType: 'Session',
+    resourceId: sessionId,
   });
 
   return {

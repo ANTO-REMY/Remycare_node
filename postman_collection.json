@@ -289,6 +289,517 @@
         }
       ],
       "description": "Authentication endpoints for user registration, login, token refresh, and logout"
+    },
+    {
+      "name": "Profile",
+      "item": [
+        {
+          "name": "Get My Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/profile/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["profile", "me"]
+            },
+            "description": "Get the authenticated user's profile"
+          },
+          "response": []
+        },
+        {
+          "name": "Update My Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Name\",\n  \"email\": \"updated@example.com\",\n  \"location\": \"Updated Location\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/profile/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["profile", "me"]
+            },
+            "description": "Update the authenticated user's profile"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Mother Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/profile/mother/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["profile", "mother", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get a mother's profile by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Mother Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dueDate\": \"2025-12-01T00:00:00.000Z\",\n  \"pregnancyWeek\": 20,\n  \"status\": \"ok\",\n  \"emergencyContact\": \"+254700000000\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/profile/mother/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["profile", "mother", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Update a mother's profile by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Get CHW Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/profile/chw/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["profile", "chw", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get a CHW's profile by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Update CHW Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"certificationNumber\": \"CHW-12345\",\n  \"maxMothersCapacity\": 60,\n  \"specializations\": \"Prenatal care, Nutrition counseling\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/profile/chw/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["profile", "chw", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Update a CHW's profile by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Nurse Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/profile/nurse/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["profile", "nurse", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get a nurse's profile by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Nurse Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"licenseNumber\": \"NURSE-67890\",\n  \"department\": \"Maternity Ward\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/profile/nurse/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["profile", "nurse", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Update a nurse's profile by ID"
+          },
+          "response": []
+        }
+      ],
+      "description": "Profile management endpoints for users, mothers, CHWs, and nurses"
+    },
+    {
+      "name": "Mother",
+      "item": [
+        {
+          "name": "Create Health Check-In",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"ok\",\n  \"symptoms\": \"None\",\n  \"notes\": \"Feeling great today\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/mother/checkin",
+              "host": ["{{baseUrl}}"],
+              "path": ["mother", "checkin"]
+            },
+            "description": "Create a health check-in for the authenticated mother"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Health Check-Ins",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/mother/checkins",
+              "host": ["{{baseUrl}}"],
+              "path": ["mother", "checkins"]
+            },
+            "description": "Get all health check-ins for the authenticated mother"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Health Check-In By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/mother/checkin/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["mother", "checkin", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get a specific health check-in by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Weekly Tips",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/mother/tips",
+              "host": ["{{baseUrl}}"],
+              "path": ["mother", "tips"]
+            },
+            "description": "Get weekly pregnancy tips for the authenticated mother"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Emergency Contact",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"emergencyContact\": \"+254700123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/mother/emergency-contact",
+              "host": ["{{baseUrl}}"],
+              "path": ["mother", "emergency-contact"]
+            },
+            "description": "Update emergency contact for the authenticated mother"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Assigned CHW",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/mother/assigned-chw",
+              "host": ["{{baseUrl}}"],
+              "path": ["mother", "assigned-chw"]
+            },
+            "description": "Get the assigned Community Health Worker for the authenticated mother"
+          },
+          "response": []
+        }
+      ],
+      "description": "Mother-specific endpoints for health check-ins, tips, and CHW assignment"
+    },
+    {
+      "name": "CHW",
+      "item": [
+        {
+          "name": "Get Assigned Mothers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chw/mothers",
+              "host": ["{{baseUrl}}"],
+              "path": ["chw", "mothers"]
+            },
+            "description": "Get all mothers assigned to the authenticated CHW"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Mother Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chw/mothers/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["chw", "mothers", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get detailed information about a specific mother"
+          },
+          "response": []
+        },
+        {
+          "name": "Escalate Case",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"motherId\": \"mother-uuid-here\",\n  \"priority\": \"high\",\n  \"issueType\": \"medical\",\n  \"description\": \"Mother experiencing severe headaches and dizziness\",\n  \"notes\": \"Requires immediate medical attention\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/chw/escalate",
+              "host": ["{{baseUrl}}"],
+              "path": ["chw", "escalate"]
+            },
+            "description": "Escalate a case to the nurse supervisor"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Mother Check-In",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"ok\",\n  \"symptoms\": \"Mild fatigue\",\n  \"notes\": \"Follow-up check recommended in 1 week\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/chw/checkin/:motherId",
+              "host": ["{{baseUrl}}"],
+              "path": ["chw", "checkin", ":motherId"],
+              "variable": [
+                {
+                  "key": "motherId",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Create a health check-in for an assigned mother"
+          },
+          "response": []
+        }
+      ],
+      "description": "CHW-specific endpoints for managing assigned mothers and escalating cases"
+    },
+    {
+      "name": "Nurse",
+      "item": [
+        {
+          "name": "Get Escalated Cases",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/nurse/cases?status=open&priority=high",
+              "host": ["{{baseUrl}}"],
+              "path": ["nurse", "cases"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "open",
+                  "description": "Filter by status: open, in_progress, resolved, closed"
+                },
+                {
+                  "key": "priority",
+                  "value": "high",
+                  "description": "Filter by priority: low, medium, high, critical"
+                }
+              ]
+            },
+            "description": "Get all escalated cases with optional filters"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Case By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/nurse/cases/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["nurse", "cases", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get detailed information about a specific case"
+          },
+          "response": []
+        },
+        {
+          "name": "Assign Case To Self",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/nurse/cases/:id/assign",
+              "host": ["{{baseUrl}}"],
+              "path": ["nurse", "cases", ":id", "assign"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Assign an escalated case to the authenticated nurse"
+          },
+          "response": []
+        },
+        {
+          "name": "Resolve Case",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"resolution\": \"Mother was referred to hospital for further examination. Follow-up scheduled for next week.\",\n  \"notes\": \"Case successfully resolved. Mother is stable and receiving proper care.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/nurse/cases/:id/resolve",
+              "host": ["{{baseUrl}}"],
+              "path": ["nurse", "cases", ":id", "resolve"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Mark a case as resolved with resolution details"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Nurse Statistics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/nurse/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["nurse", "stats"]
+            },
+            "description": "Get statistics for the authenticated nurse including case counts"
+          },
+          "response": []
+        }
+      ],
+      "description": "Nurse-specific endpoints for viewing and managing escalated cases"
     }
   ],
   "variable": [

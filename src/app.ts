@@ -4,6 +4,10 @@ import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import morgan from 'morgan';
 import authRoutes from './routes/authRoutes.js';
+import profileRoutes from './routes/profileRoutes.js';
+import motherRoutes from './routes/motherRoutes.js';
+import chwRoutes from './routes/chwRoutes.js';
+import nurseRoutes from './routes/nurseRoutes.js';
 
 const app = express();
 
@@ -35,6 +39,10 @@ app.get('/health', (req, res) => {
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/profile', profileRoutes);
+app.use('/api/mother', motherRoutes);
+app.use('/api/chw', chwRoutes);
+app.use('/api/nurse', nurseRoutes);
 
 // Error handling middleware
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {

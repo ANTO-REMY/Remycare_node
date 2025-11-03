@@ -36,6 +36,7 @@ model Mother {
   status         String   // 'ok' | 'not_ok' | 'no_response'
   medicalHistory String?
   emergencyContact String?
+  checkIns       HealthCheckIn[]
 }
 
 model CHW {
@@ -78,4 +79,32 @@ model AuditLog {
   ipAddress    String?
   userAgent    String?
   createdAt    DateTime @default(now())
+}
+
+model HealthCheckIn {
+  id          String   @id @default(uuid())
+  mother      Mother   @relation(fields: [motherId], references: [id])
+  motherId    String
+  status      String   // 'ok' | 'not_ok' | 'no_response'
+  symptoms    String?
+  notes       String?
+  createdBy   String?  // userId of CHW or mother
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model CaseEscalation {
+  id            String   @id @default(uuid())
+  motherId      String
+  chwId         String
+  nurseId       String?
+  priority      String   // 'low' | 'medium' | 'high' | 'critical'
+  status        String   // 'open' | 'in_progress' | 'resolved' | 'closed'
+  issueType     String   // 'medical' | 'mental_health' | 'emergency' | 'other'
+  description   String
+  notes         String?
+  resolution    String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  resolvedAt    DateTime?
 }
