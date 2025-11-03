@@ -4,7 +4,7 @@ import * as auditService from './auditService.js';
 const prisma = new PrismaClient();
 
 export const getAssignedMothers = async (chwId: string) => {
-  const chw = await prisma.chw.findUnique({
+  const chw = await prisma.cHW.findUnique({
     where: { id: chwId },
     include: {
       mothers: {
@@ -19,7 +19,7 @@ export const getAssignedMothers = async (chwId: string) => {
     throw new Error('CHW profile not found');
   }
 
-  return chw.mothers.map((mother) => ({
+  return chw.mothers.map((mother: any) => ({
     id: mother.id,
     name: mother.user.name,
     phone: mother.user.phone,
@@ -36,16 +36,19 @@ export const getMotherDetails = async (motherId: string) => {
     where: { id: motherId },
     include: {
       user: true,
-      checkIns: {
-        orderBy: { createdAt: 'desc' },
-        take: 10,
-      },
     },
   });
 
   if (!mother) {
     throw new Error('Mother not found');
   }
+
+  // Get recent check-ins separately
+  const recentCheckIns = await (prisma as any).healthCheckIn.findMany({
+    where: { motherId },
+    orderBy: { createdAt: 'desc' },
+    take: 10,
+  });
 
   return {
     id: mother.id,
@@ -60,12 +63,12 @@ export const getMotherDetails = async (motherId: string) => {
     medicalHistory: mother.medicalHistory,
     emergencyContact: mother.emergencyContact,
     lastCheckIn: mother.lastCheckIn,
-    recentCheckIns: mother.checkIns,
+    recentCheckIns,
   };
 };
 
 export const escalateCase = async (chwId: string, data: any) => {
-  const escalation = await prisma.caseEscalation.create({
+  const escalation = await (prisma as any).caseEscalation.create({
     data: {
       motherId: data.motherId,
       chwId,
@@ -102,7 +105,7 @@ export const createMotherCheckIn = async (chwId: string, motherId: string, data:
     throw new Error('Mother not assigned to this CHW');
   }
 
-  const checkIn = await prisma.healthCheckIn.create({
+  const checkIn = await (prisma as any).healthCheckIn.create({
     data: {
       motherId,
       status: data.status,

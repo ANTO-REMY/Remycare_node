@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '../utils/prisma.js';
 
 export const getEscalatedCases = async (filters: { status?: string; priority?: string }) => {
   const where: any = {};
@@ -37,7 +35,7 @@ export const getCaseById = async (id: string) => {
     include: { user: true },
   });
 
-  const chw = await prisma.chw.findUnique({
+  const chw = await prisma.cHW.findUnique({
     where: { id: caseData.chwId },
     include: { user: true },
   });

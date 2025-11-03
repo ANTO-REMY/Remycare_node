@@ -1,9 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
-import { verifyAccessToken, JWTPayload } from '../utils/jwt';
-
-export interface AuthRequest extends Request {
-  user?: JWTPayload;
-}
+import { Response, NextFunction } from 'express';
+import { verifyAccessToken } from '../utils/jwt.js';
+import { AuthRequest } from '../types/index.js';
 
 export const authenticate = (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
@@ -16,7 +13,14 @@ export const authenticate = (req: AuthRequest, res: Response, next: NextFunction
     const token = authHeader.substring(7);
     const payload = verifyAccessToken(token);
     
-    req.user = payload;
+    // Store minimal user info from JWT
+    req.user = {
+      id: payload.userId,
+      role: payload.role,
+      phone: '', // Not in JWT, would need to fetch from DB if needed
+      name: '', // Not in JWT, would need to fetch from DB if needed
+      isActive: true,
+    };
     next();
   } catch (error) {
     return res.status(401).json({ error: 'Invalid or expired token' });

@@ -8,11 +8,13 @@ import profileRoutes from './routes/profileRoutes.js';
 import motherRoutes from './routes/motherRoutes.js';
 import chwRoutes from './routes/chwRoutes.js';
 import nurseRoutes from './routes/nurseRoutes.js';
+import { sanitizeInput, securityHeaders, checkAccountStatus } from './middleware/security.js';
 
 const app = express();
 
 // Security middleware
 app.use(helmet());
+app.use(securityHeaders);
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:5173',
   credentials: true
@@ -21,7 +23,8 @@ app.use(cors({
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again later.'
 });
 app.use('/api/', limiter);
 
@@ -29,20 +32,23 @@ app.use('/api/', limiter);
 app.use(morgan('dev'));
 
 // Body parsing
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Input sanitization
+app.use(sanitizeInput);
 
 // Health check
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Routes
+// Routes - with account status check for authenticated routes
 app.use('/api/auth', authRoutes);
-app.use('/api/profile', profileRoutes);
-app.use('/api/mother', motherRoutes);
-app.use('/api/chw', chwRoutes);
-app.use('/api/nurse', nurseRoutes);
+app.use('/api/profile', checkAccountStatus, profileRoutes);
+app.use('/api/mother', checkAccountStatus, motherRoutes);
+app.use('/api/chw', checkAccountStatus, chwRoutes);
+app.use('/api/nurse', checkAccountStatus, nurseRoutes);
 
 // Error handling middleware
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {

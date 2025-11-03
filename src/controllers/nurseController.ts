@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import * as nurseService from '../services/nurseService.js';
+import * as nurseService from '../services/nurseService';
 
 export const getEscalatedCases = async (req: Request, res: Response) => {
   try {

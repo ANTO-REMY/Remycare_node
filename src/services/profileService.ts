@@ -50,14 +50,14 @@ export const updateMotherProfile = async (id: string, data: any) => {
 };
 
 export const getCHWProfile = async (id: string) => {
-  return prisma.chw.findUnique({
+  return prisma.cHW.findUnique({
     where: { id },
     include: { user: true, mothers: true },
   });
 };
 
 export const updateCHWProfile = async (id: string, data: any) => {
-  return prisma.chw.update({
+  return prisma.cHW.update({
     where: { id },
     data,
   });

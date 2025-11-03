@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import * as motherService from '../services/motherService.js';
+import * as motherService from '../services/motherService';
 
 export const createCheckIn = async (req: Request, res: Response) => {
   try {

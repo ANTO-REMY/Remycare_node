@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '../utils/prisma.js';
 
 export const createHealthCheckIn = async (userId: string, data: any) => {
   const mother = await prisma.mother.findUnique({ where: { id: userId } });

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import * as chwService from '../services/chwService.js';
+import * as chwService from '../services/chwService';
 
 export const getAssignedMothers = async (req: Request, res: Response) => {
   try {
